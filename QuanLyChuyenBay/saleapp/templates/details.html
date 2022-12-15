@@ -1,0 +1,15 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+<h1 class="text-center text-danger">CHI TIẾT CHUYẾN BAY</h1>
+<div class="row">
+
+    <div class="col-md-8 col-sm-6">
+        <h1>{{ chuyenbay.name }}</h1>
+        <p>Ngày bay: {{ chuyenbay.ngay_bay }}</p>
+        <p>Thời gian bay: {{ chuyenbay.thoi_gian_bay }}</p>
+
+
+    </div>
+</div>
+{% endblock %}
