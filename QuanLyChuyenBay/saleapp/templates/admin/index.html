@@ -1,7 +1,11 @@
 {% extends 'admin/master.html' %}
 
 {% block body %}
-<h1 class="text-center text-danger">TRANG CHỦ QUẢN TRỊ BÁN VÉ MÁY BAY</h1>
+{% if current_user.is_authenticated %}
+<h1 class="text-center text-success">TRANG CHỦ QUẢN TRỊ BÁN VÉ MÁY BAY</h1>
+<h3>Chào <span class="text-danger">{{current_user.name}}</span></h3>
+{% else %}
+<h1 class="text-center text-danger">ĐĂNG NHẬP QUẢN TRỊ</h1>
 <form method="post" action="/login-admin">
   <div class="mb-3 mt-3">
     <label for="user" class="form-label">Tên đăng nhập:</label>
@@ -13,4 +17,5 @@
   </div>
   <button type="submit" class="btn btn-primary">Đăng nhập</button>
 </form>
+{% endif %}
 {% endblock %}

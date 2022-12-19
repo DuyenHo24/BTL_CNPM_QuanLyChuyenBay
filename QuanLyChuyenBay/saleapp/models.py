@@ -2,11 +2,13 @@ from sqlalchemy import Column, Integer, String, Float, Boolean, ForeignKey, Text
 from saleapp import db, app
 from sqlalchemy.orm import relationship
 from enum import Enum as UserEnum
+from flask_login import UserMixin
 
 
 class UserRole(UserEnum):
     USER = 1
     ADMIN = 2
+    CUSTOMER = 3
 
 
 class BaseModel(db.Model):
@@ -84,19 +86,48 @@ class GiaVe(BaseModel):
     hang_ghe_id = Column(Integer, ForeignKey(HangGhe.id), nullable=False)
 
 
-class User(BaseModel):
-    name = Column(String(50), nullable=False)
-    sdt = Column(String(50), nullable=False)
-    address = Column(String(50), nullable=False)
+class User(BaseModel, UserMixin):
+    name = Column(String(100), nullable=False)
+    phone = Column(String(50), nullable=False)
+    address = Column(String(100), nullable=False)
     username = Column(String(50), nullable=False)
     password = Column(String(50), nullable=False)
     image = Column(String(100), nullable=False)
     active = Column(Boolean, default=True)
-    user_role = Column(Enum(UserRole), default=UserRole.USER)
+    user_role = Column(Enum(UserRole), default=UserRole.CUSTOMER)
+
+    def __str__(self):
+        return self.name
 
 
 if __name__ == '__main__':
     with app.app_context():
+        # import hashlib
+        # password = str(hashlib.md5('D123456'.encode('utf-8')).hexdigest())
+        # u = User(name='Hồ Duyên', phone='0812881212', address='TPHCM', username='adminD', password=password,
+        #          image='https://res.cloudinary.com/dwhnp2hsa/image/upload/v1671206362/zlq0axh3exiqw8nggxgh.jpg',
+        #          user_role=UserRole.ADMIN)
+        #
+        # password1 = str(hashlib.md5('N123456'.encode('utf-8')).hexdigest())
+        # u1 = User(name='Lê Ngân', phone='0819613163', address='TPHCM', username='adminN', password=password1,
+        #          image='https://res.cloudinary.com/dwhnp2hsa/image/upload/v1671206081/c6q0azltjwboqtv73pwq.jpg',
+        #          user_role=UserRole.ADMIN)
+        # db.session.add_all([u, u1])
+        # db.session.commit()
+
+        import hashlib
+        password = str(hashlib.md5('123456'.encode('utf-8')).hexdigest())
+        u2 = User(name='Văn An', phone='0812881234', address='TPHCM', username='an123', password=password,
+                 image='https://res.cloudinary.com/dwhnp2hsa/image/upload/v1671206362/zlq0axh3exiqw8nggxgh.jpg',
+                 user_role=UserRole.CUSTOMER)
+
+        password1 = str(hashlib.md5('123456'.encode('utf-8')).hexdigest())
+        u3 = User(name='Văn Bình', phone='0819613123', address='TPHCM', username='binh123', password=password1,
+                  image='https://res.cloudinary.com/dwhnp2hsa/image/upload/v1671206362/zlq0axh3exiqw8nggxgh.jpg',
+                  user_role=UserRole.CUSTOMER)
+        db.session.add_all([u2, u3])
+        db.session.commit()
+
         # sb1 = SanBay(name='Tân Sơn Nhất', note='TPHCM')
         # sb2 = SanBay(name='Nội Bài', note='Hà Nội')
         # sb3 = SanBay(name='Liên Khương', note='Đà Lạt')

@@ -2,10 +2,12 @@ from saleapp.models import TuyenBay, ChuyenBay
 from saleapp import db, app
 from flask_admin import Admin, BaseView, expose
 from flask_admin.contrib.sqla import ModelView
+from flask_login import current_user
 
 
 class ChuyenBayView(ModelView):
     column_searchable_list = ['name', 'ngay_bay']
+    column_filters = ['name', 'ngay_bay']
     column_labels = {
         'name': 'Tên Chuyến Bay',
         'ngay_bay': 'Ngày Bay',
@@ -18,9 +20,13 @@ class ChuyenBayView(ModelView):
     }  # đổi tên cột
     can_view_details = True
 
+    def is_accessible(self):
+        return current_user.is_authenticated
+
 
 class TuyenBayView(ModelView):
     column_searchable_list = ['name']
+    column_filters = ['name']
     column_labels = {
         'name': 'Tên Tuyến Bay',
         'active': 'Tình Trạng',
@@ -28,11 +34,17 @@ class TuyenBayView(ModelView):
         'san_bay_den': 'Sân bay đến'
     }  # đổi tên cột
 
+    def is_accessible(self):
+        return current_user.is_authenticated
+
 
 class StatsView(BaseView):
     @expose('/')
     def index(self):
         return self.render('admin/stats.html')
+
+    def is_accessible(self):
+        return current_user.is_authenticated
 
 
 admin = Admin(app=app, name='QUẢN TRỊ BÁN VÉ MÁY BAY', template_mode='bootstrap4') #venv/lib/site-package/flask_admin/templates/bootstrap4
