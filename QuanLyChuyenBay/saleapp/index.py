@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, session
 from saleapp import app, dao, admin, login
 from flask_login import login_user, logout_user
 from saleapp.decorators import annonymous_user
@@ -56,7 +56,7 @@ def register_customer():
         else:
             err_msg = 'Mật khẩu KHÔNG khớp'
 
-    return render_template('registercustomer.html',err_msg=err_msg)
+    return render_template('registercustomer.html', err_msg=err_msg)
 
 
 @app.route('/logincustomer', methods=['get','post'])
@@ -78,6 +78,16 @@ def login_customer():
 def logout_my_user():
     logout_user()
     return redirect('/logincustomer')
+
+
+@app.route('/datve')
+def datve():
+    return render_template('datve.html')
+
+
+@app.route('/thongtindatve')
+def thongtindatve():
+    return render_template('thongtindatve.html')
 
 @app.context_processor
 def common_attr():

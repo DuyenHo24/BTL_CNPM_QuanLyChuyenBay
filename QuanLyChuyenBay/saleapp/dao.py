@@ -35,9 +35,9 @@ def get_user_by_id(user_id):
     return User.query.get(user_id)
 
 
-# def register_customer(name, address, phone, username, password, avatar):
-#     password = str(hashlib.md5(password.strip().encode('utf-8')).hexdigest())
-#     c = Customer(name=name, address=address, phone=phone, username=username.strip(), password=password, image=avatar) #a=b thì a là tên trường trong lớp models
-#     db.session.add(c)
-#     db.session.commit()
+def register_customer(name, address, phone, username, password, avatar):
+    password = str(hashlib.md5(password.strip().encode('utf-8')).hexdigest())
+    u = User(name=name, address=address, phone=phone, username=username.strip(), password=password, image=avatar) #a=b thì a là tên trường trong lớp models
+    db.session.add(u)
+    db.session.commit()
 

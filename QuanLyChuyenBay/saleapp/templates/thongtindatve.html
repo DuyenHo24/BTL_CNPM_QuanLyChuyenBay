@@ -1,0 +1,23 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+<h1 class="text-center text-success">THÔNG TIN ĐẶT VÉ</h1>
+<form method="get" action="/thongtindatve">
+    <div class="form-floating mb-3 mt-3">
+        <input type="text" class="form-control" required id="name" placeholder="Nhập họ tên" name="name">
+        <label for="name">Họ tên</label>
+    </div>
+    <div class="form-floating mb-3 mt-3">
+        <input type="text" class="form-control" required id="phone" placeholder="Nhập số điện thoại" name="phone">
+        <label for="phone">Số điện thoại</label>
+    </div>
+    <div class="form-floating mb-3 mt-3">
+        <input type="text" class="form-control" required id="cccd" placeholder="Nhập số CMND/CCCD" name="cccd">
+        <label for="cccd">Số CMND/CCCD</label>
+    </div>
+    <div>
+        <input type="submit" value="Đặt Vé" class="btn btn-danger">
+    </div>
+
+</form>
+{% endblock %}
