@@ -1,6 +1,7 @@
-from saleapp.models import TuyenBay, ChuyenBay, User
+from saleapp.models import TuyenBay, ChuyenBay, User, GiaVe
 from saleapp import db
 import hashlib
+from sqlalchemy import func
 
 
 def load_tuyenbay():
@@ -20,8 +21,12 @@ def load_chuyenbay(tb_id=None, kw=None):
     return query.all()
 
 
+def get_giave_by_hg_id(hg_id):
+    return GiaVe.query(GiaVe.hang_ghe_id.__eq__(hg_id))
+
+
 def get_chuyenbay_by_id(chuyen_bay_id):
-    return ChuyenBay.query.get(chuyen_bay_id) #Select * From ChuyenBay Where id = chuyen_bay_id
+    return ChuyenBay.query.get(chuyen_bay_id)
 
 
 #hàm đăng nhập
@@ -40,4 +45,18 @@ def register_customer(name, address, phone, username, password, avatar):
     u = User(name=name, address=address, phone=phone, username=username.strip(), password=password, image=avatar) #a=b thì a là tên trường trong lớp models
     db.session.add(u)
     db.session.commit()
+
+
+def count_chuyenbay_by_tuyenbay():
+    return db.session.query(TuyenBay.id, TuyenBay.name, func.count(ChuyenBay.id))\
+            .join(ChuyenBay, ChuyenBay.tuyen_bay_id.__eq__(TuyenBay.id), isouter=True)\
+            .group_by(TuyenBay.id).all()
+
+
+if __name__ == '__main__':
+    from saleapp import app
+    with app.app_context():
+        print(count_chuyenbay_by_tuyenbay())
+
+
 

@@ -1,6 +1,6 @@
 from saleapp.models import TuyenBay, ChuyenBay
-from saleapp import db, app
-from flask_admin import Admin, BaseView, expose
+from saleapp import db, app, dao
+from flask_admin import Admin, BaseView, expose, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
 
@@ -19,6 +19,7 @@ class ChuyenBayView(ModelView):
         'may_bay': 'Máy Bay'
     }  # đổi tên cột
     can_view_details = True
+    column_exclude_list = ['image']  # ẩn cột
 
     def is_accessible(self):
         return current_user.is_authenticated
@@ -47,7 +48,14 @@ class StatsView(BaseView):
         return current_user.is_authenticated
 
 
-admin = Admin(app=app, name='QUẢN TRỊ BÁN VÉ MÁY BAY', template_mode='bootstrap4') #venv/lib/site-package/flask_admin/templates/bootstrap4
+class MyAdminView(AdminIndexView):
+    @expose('/')
+    def index(self):
+        stats = dao.count_chuyenbay_by_tuyenbay()
+        return self.render('admin/index.html', stats=stats)
+
+
+admin = Admin(app=app, name='QUẢN TRỊ BÁN VÉ MÁY BAY', template_mode='bootstrap4', index_view=MyAdminView()) #venv/lib/site-package/flask_admin/templates/bootstrap4
 admin.add_view(TuyenBayView(TuyenBay, db.session, name='Tuyến Bay'))
 admin.add_view(ChuyenBayView(ChuyenBay, db.session, name='Chuyến Bay'))
 admin.add_view(StatsView(name='Thống kê'))

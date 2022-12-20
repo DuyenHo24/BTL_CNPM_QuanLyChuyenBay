@@ -17,8 +17,16 @@ def index():
 @app.route("/chuyen_bay/<int:chuyen_bay_id>")
 def details(chuyen_bay_id):
     cb = dao.get_chuyenbay_by_id(chuyen_bay_id)
+
     return render_template('details.html', chuyenbay=cb) #chuyenbay sd bên details.html
 
+
+@app.route('/thongtindatve/<int:chuyen_bay_id>')
+def thongtindatve(chuyen_bay_id):
+    cb = dao.get_chuyenbay_by_id(chuyen_bay_id)
+    # hg = ['hang_ghe']
+    # giave = dao.get_giave_by_hg_id(hg)
+    return render_template('thongtindatve.html', chuyenbay=cb)
 
 @app.route('/login-admin', methods=['post'])
 def login_admin():
@@ -84,10 +92,6 @@ def logout_my_user():
 def datve():
     return render_template('datve.html')
 
-
-@app.route('/thongtindatve')
-def thongtindatve():
-    return render_template('thongtindatve.html')
 
 @app.context_processor
 def common_attr():

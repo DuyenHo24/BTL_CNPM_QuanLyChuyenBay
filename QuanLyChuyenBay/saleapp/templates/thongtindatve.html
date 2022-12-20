@@ -1,7 +1,7 @@
 {% extends 'layout/base.html' %}
 
 {% block content %}
-<h1 class="text-center text-success">THÔNG TIN ĐẶT VÉ</h1>
+<h1 class="text-center text-danger" style="padding:1rem">THÔNG TIN ĐẶT VÉ</h1>
 <form method="get" action="/thongtindatve">
     <div class="form-floating mb-3 mt-3">
         <input type="text" class="form-control" required id="name" placeholder="Nhập họ tên" name="name">
@@ -15,8 +15,20 @@
         <input type="text" class="form-control" required id="cccd" placeholder="Nhập số CMND/CCCD" name="cccd">
         <label for="cccd">Số CMND/CCCD</label>
     </div>
+    <div class="form-floating mb-3 mt-3">
+        <input type="text" class="form-control" value="{{ chuyenbay.name }}" readonly>
+        <label for="cccd">Tên chuyến bay</label>
+    </div>
     <div>
-        <input type="submit" value="Đặt Vé" class="btn btn-danger">
+        <select class="form-select form-select-lg" name="hang_ghe">
+            {% for hg in chuyenbay.hang_ghe %}
+            <option value="{{hg.id}}">{{ hg.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div style="padding-top:15px" class="text-center">
+        <input type="submit" value="Đặt Vé" class="btn btn-danger" style="font-size:20px">
     </div>
 
 </form>

@@ -7,12 +7,12 @@
         {% for cb in chuyen_bay %}
         <div class="col-md-3 col-sm-12" style="padding:1rem;">
             <div class="card">
-
+                <img class="card-img-top" src="{{ cb.image }}" alt="{{ cb.name }}">
                 <div class="card-body">
                     <h4 class="card-title">{{ cb.name }}</h4>
                     <p class="card-text">Ngày bay: {{ cb.ngay_bay }} </p>
                     <a href="/chuyen_bay/{{cb.id}}" class="btn btn-primary">Xem chi tiết</a>
-                    <a class="btn btn-danger" href="/thongtindatve">Chọn vé</a>
+                    <a class="btn btn-danger" href="/thongtindatve/{{cb.id}}">Chọn vé</a>
                 </div>
             </div>
         </div>

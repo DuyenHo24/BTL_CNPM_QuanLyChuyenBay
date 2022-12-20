@@ -1,9 +1,11 @@
 {% extends 'layout/base.html' %}
 
 {% block content %}
-<h1 class="text-center text-danger">CHI TIẾT CHUYẾN BAY</h1>
+<h1 class="text-center text-danger" style="padding:1rem">CHI TIẾT CHUYẾN BAY</h1>
 <div class="row">
-
+    <div class="col-md-4 col-sm-6">
+        <img src="{{ chuyenbay.image }}" class="img-fluid" alt="{{ chuyenbay.name }}" />
+    </div>
     <div class="col-md-8 col-sm-6">
         <h1>{{ chuyenbay.name }}</h1>
         <p>Ngày bay: {{ chuyenbay.ngay_bay }}</p>
