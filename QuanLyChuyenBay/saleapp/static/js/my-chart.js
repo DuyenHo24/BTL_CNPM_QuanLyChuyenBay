@@ -20,3 +20,28 @@ const ctx = document.getElementById('chuyenBayStats');
     }
   });
 }
+
+
+function drawDoanhThuChart(labels, data){
+const ctx = document.getElementById('doanhThuStats');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Doanh thu',
+        data: data,
+        borderWidth: 1,
+        backgroundColor: ['green', 'red', 'blue', 'yellow']
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+}

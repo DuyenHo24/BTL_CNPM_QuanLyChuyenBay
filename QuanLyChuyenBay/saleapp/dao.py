@@ -1,4 +1,4 @@
-from saleapp.models import TuyenBay, ChuyenBay, User, GiaVe
+from saleapp.models import TuyenBay, ChuyenBay, User, Ve, HangGhe
 from saleapp import db
 import hashlib
 from sqlalchemy import func
@@ -20,9 +20,6 @@ def load_chuyenbay(tb_id=None, kw=None):
 
     return query.all()
 
-
-def get_giave_by_hg_id(hg_id):
-    return GiaVe.query(GiaVe.hang_ghe_id.__eq__(hg_id))
 
 
 def get_chuyenbay_by_id(chuyen_bay_id):
@@ -53,10 +50,26 @@ def count_chuyenbay_by_tuyenbay():
             .group_by(TuyenBay.id).all()
 
 
+def sum_doanhthu_by_chuyenbay(kw=None, from_date=None, to_date=None):
+    query = db.session.query(Ve.chuyen_bay_id, ChuyenBay.name, func.sum(HangGhe.don_gia))\
+            .filter(Ve.chuyen_bay_id == ChuyenBay.id).filter(Ve.hang_ghe_id == HangGhe.id)
+
+    if kw:
+        query = query.filter(ChuyenBay.name.contains(kw))
+
+    if from_date:
+        query = query.filter(ChuyenBay.ngay_bay.__ge__(from_date))
+
+    if to_date:
+        query = query.filter(ChuyenBay.ngay_bay.__le__(to_date))
+    return query.group_by(Ve.chuyen_bay_id).all()
+
+
 if __name__ == '__main__':
     from saleapp import app
     with app.app_context():
         print(count_chuyenbay_by_tuyenbay())
+        print(sum_doanhthu_by_chuyenbay())
 
 
 

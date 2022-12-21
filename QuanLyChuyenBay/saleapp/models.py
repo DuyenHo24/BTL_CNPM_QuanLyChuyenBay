@@ -76,18 +76,12 @@ class ChiTietChuyenBay(BaseModel):
 
 class HangGhe(BaseModel):
     name = Column(String(100), nullable=False)
+    don_gia = Column(Float, nullable=False)
     chuyen_bay_id = Column(Integer, ForeignKey(ChuyenBay.id), nullable=False)
-    gia_ve = relationship('GiaVe', backref='hang_ghe')
     ve = relationship('Ve', backref='hang_ghe', lazy=True)
 
     def __str__(self):
         return self.name
-
-
-class GiaVe(BaseModel):
-    don_gia = Column(Float, default=0)
-    hang_ghe_id = Column(Integer, ForeignKey(HangGhe.id), nullable=False)
-    ve = relationship('Ve', backref='gia_ve', lazy=True)
 
 
 class User(BaseModel, UserMixin):
@@ -112,12 +106,6 @@ class Ve(BaseModel):
     chuyen_bay_id = Column(Integer, ForeignKey(ChuyenBay.id), nullable=False)
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
     hang_ghe_id = Column(Integer, ForeignKey(HangGhe.id), nullable=False)
-    gia_ve_id = Column(Integer, ForeignKey(GiaVe.id), nullable=False)
-
-
-
-    def __str__(self):
-        return self.name
 
 
 if __name__ == '__main__':
@@ -147,7 +135,7 @@ if __name__ == '__main__':
         #           user_role=UserRole.CUSTOMER)
         # db.session.add_all([u2, u3])
         # db.session.commit()
-
+        #
         # sb1 = SanBay(name='Tân Sơn Nhất', note='TPHCM')
         # sb2 = SanBay(name='Nội Bài', note='Hà Nội')
         # sb3 = SanBay(name='Liên Khương', note='Đà Lạt')
@@ -194,59 +182,57 @@ if __name__ == '__main__':
         # db.session.add_all([tb1, tb2,tb3, tb4, tb5, tb6, tb7, tb8, tb9, tb10, tb11, tb12, tb13, tb14])
         # db.session.commit()
         #
-        # cb1 = ChuyenBay(name='HCM-HN-B0777', ngay_bay='2023-01-10 17:00:00', thoi_gian_bay='2 giờ 40 phút',
+        # cb1 = ChuyenBay(name='HCM-HN-B0777', ngay_bay='2023-01-10 18:00:00', thoi_gian_bay='2 giờ 40 phút',
         #                 so_ghe1=50, so_ghe2=15, tuyen_bay_id=1, may_bay_id=1, image='https://res.cloudinary.com/dwhnp2hsa/image/upload/v1671525896/rlyyacqkepnxjuxcyaqc.jpg')
-        # cb2 = ChuyenBay(name='HCM-DL-B0787', ngay_bay='2023-01-20 06:00:00', thoi_gian_bay='1 giờ 5 phút',
+        # cb2 = ChuyenBay(name='HCM-DL-B0787', ngay_bay='2023-01-20 07:00:00', thoi_gian_bay='1 giờ 5 phút',
         #                 so_ghe1=55, so_ghe2=10, tuyen_bay_id=2, may_bay_id=2, image='https://res.cloudinary.com/dwhnp2hsa/image/upload/v1671525836/mn15izgqz7cy6uxykdga.jpg')
-        # cb3 = ChuyenBay(name='HCM-NT-A321', ngay_bay='2023-01-11 22:00:00', thoi_gian_bay='1 giờ 10 phút',
+        # cb3 = ChuyenBay(name='HCM-NT-A321', ngay_bay='2023-01-11 21:00:00', thoi_gian_bay='1 giờ 10 phút',
         #                 so_ghe1=50, so_ghe2=170, tuyen_bay_id=5, may_bay_id=3, image='https://res.cloudinary.com/dwhnp2hsa/image/upload/v1671525774/fuvgxrrv5ocvwcl4etwo.jpg')
-        # cb4 = ChuyenBay(name='HCM-QN-A330', ngay_bay='2023-03-24 05:00:00', thoi_gian_bay='2 giờ 15 phút',
+        # cb4 = ChuyenBay(name='HCM-QN-A330', ngay_bay='2023-03-24 08:00:00', thoi_gian_bay='2 giờ 15 phút',
         #                 so_ghe1=200, so_ghe2=220, tuyen_bay_id=4, may_bay_id=4, image='https://res.cloudinary.com/dwhnp2hsa/image/upload/v1671525740/yaapbljo06vq3gjj2gpf.jpg')
-        # cb5 = ChuyenBay(name='HCM-HP-A330', ngay_bay='2023-03-25 19:00:00', thoi_gian_bay='2 giờ 5 phút',
+        # cb5 = ChuyenBay(name='HCM-HP-A330', ngay_bay='2023-03-25 17:00:00', thoi_gian_bay='2 giờ 5 phút',
         #                 so_ghe1=200, so_ghe2=220, tuyen_bay_id=5, may_bay_id=4, image='https://res.cloudinary.com/dwhnp2hsa/image/upload/v1671525786/ohl9bu4kbpoqbmdghwtb.jpg')
-        # cb6 = ChuyenBay(name='HCM-NA-A321', ngay_bay='2023-04-22 14:00:00', thoi_gian_bay='1 giờ 55 phút',
+        # cb6 = ChuyenBay(name='HCM-NA-A321', ngay_bay='2023-04-22 12:00:00', thoi_gian_bay='1 giờ 55 phút',
         #                 so_ghe1=50, so_ghe2=170, tuyen_bay_id=6, may_bay_id=3, image='https://res.cloudinary.com/dwhnp2hsa/image/upload/v1671525200/krc7ub9bakgmqqg0oeqo.jpg')
-        # cb7 = ChuyenBay(name='HCM-HQ-A350', ngay_bay='2023-05-15 03:00:00', thoi_gian_bay='4 giờ 55 phút',
+        # cb7 = ChuyenBay(name='HCM-HQ-A350', ngay_bay='2023-05-15 06:00:00', thoi_gian_bay='4 giờ 55 phút',
         #                 so_ghe1=200, so_ghe2=220, tuyen_bay_id=7, may_bay_id=5, image='https://res.cloudinary.com/dwhnp2hsa/image/upload/v1671525825/gosju1dbiwmipzyhrma3.jpg')
-        # cb8 = ChuyenBay(name='HCM-NB-A350', ngay_bay='2023-06-12 23:00:00', thoi_gian_bay='8 giờ 20 phút',
+        # cb8 = ChuyenBay(name='HCM-NB-A350', ngay_bay='2023-06-12 20:00:00', thoi_gian_bay='8 giờ 20 phút',
         #                 so_ghe1=200, so_ghe2=220, tuyen_bay_id=8, may_bay_id=5, image='https://res.cloudinary.com/dwhnp2hsa/image/upload/v1671525798/pxcaezltm89vz1yhhiob.jpg')
-        # cb9 = ChuyenBay(name='HCM-TL-A330', ngay_bay='2023-06-21 04:00:00', thoi_gian_bay='1 giờ 30 phút',
+        # cb9 = ChuyenBay(name='HCM-TL-A330', ngay_bay='2023-06-21 09:00:00', thoi_gian_bay='1 giờ 30 phút',
         #                 so_ghe1=200, so_ghe2=220, tuyen_bay_id=9, may_bay_id=4, image='https://res.cloudinary.com/dwhnp2hsa/image/upload/v1671525850/nfag79dcppcak5zdicxs.jpg')
-        # cb10 = ChuyenBay(name='HCM-Sing-A380-900', ngay_bay='2023-07-24 16:00:00', thoi_gian_bay='2 giờ 5 phút',
+        # cb10 = ChuyenBay(name='HCM-Sing-A380-900', ngay_bay='2023-07-24 13:00:00', thoi_gian_bay='2 giờ 5 phút',
         #                  so_ghe1=400, so_ghe2=453, tuyen_bay_id=10, may_bay_id=6, image='https://res.cloudinary.com/dwhnp2hsa/image/upload/v1671525921/dd344657l5zwgi9qwarj.jpg')
-        # cb11 = ChuyenBay(name='HCM-NY-B0747-400', ngay_bay='2023-08-03 21:00:00', thoi_gian_bay='20 giờ 20 phút',
+        # cb11 = ChuyenBay(name='HCM-NY-B0747-400', ngay_bay='2023-08-03 15:00:00', thoi_gian_bay='20 giờ 20 phút',
         #                  so_ghe1=300, so_ghe2=324, tuyen_bay_id=11, may_bay_id=7, image='https://res.cloudinary.com/dwhnp2hsa/image/upload/v1671525811/jztn7xhropt2gg1gtof1.jpg')
-        # cb12 = ChuyenBay(name='HN-HCM-B0777', ngay_bay='2023-08-15 23:00:00', thoi_gian_bay='2 giờ 40 phút',
+        # cb12 = ChuyenBay(name='HN-HCM-B0777', ngay_bay='2023-08-15 21:00:00', thoi_gian_bay='2 giờ 40 phút',
         #                  so_ghe1=50, so_ghe2=15, tuyen_bay_id=12, may_bay_id=1, image='https://res.cloudinary.com/dwhnp2hsa/image/upload/v1671525718/czxfgrj8cc5m5kxfgcmw.jpg')
-        # cb13 = ChuyenBay(name='HN-BK-A321', ngay_bay='2023-09-21 01:00:00', thoi_gian_bay='7 giờ 30 phút',
+        # cb13 = ChuyenBay(name='HN-BK-A321', ngay_bay='2023-09-21 20:00:00', thoi_gian_bay='7 giờ 30 phút',
         #                  so_ghe1=50, so_ghe2=170, tuyen_bay_id=13, may_bay_id=3, image='https://res.cloudinary.com/dwhnp2hsa/image/upload/v1671525864/ti58mcuj5ttevvkhb9us.jpg')
-        # cb14 = ChuyenBay(name='HN-LA-A380-900', ngay_bay='2023-10-29 02:00:00', thoi_gian_bay='15 giờ 55 phút',
-        #                  so_ghe1=400, so_ghe2=453, tuyen_bay_id=14, may_bay_id=6, image='https://res.cloudinary.com/dwhnp2hsa/image/upload/v1671525879/ckgzu0edmfujfji3pl3f.jpg')
+        # cb14 = ChuyenBay(name='HN-LA-A380-900', ngay_bay='2023-10-29 10:00:00', thoi_gian_bay='15 giờ 55 phút',
+        #                   so_ghe1=400, so_ghe2=453, tuyen_bay_id=14, may_bay_id=6, image='https://res.cloudinary.com/dwhnp2hsa/image/upload/v1671525879/ckgzu0edmfujfji3pl3f.jpg')
         # db.session.add_all([cb1, cb2, cb3, cb4, cb5, cb6, cb7, cb8, cb9, cb10, cb11, cb12, cb13, cb14])
         # db.session.commit()
         #
-        # hg1 = HangGhe(name="Hạng ghế 2", chuyen_bay_id=10)
-        # hg2 = HangGhe(name="Hạng ghế 2", chuyen_bay_id=11)
-        # hg3 = HangGhe(name="Hạng ghế 2", chuyen_bay_id=12)
-        # hg4 = HangGhe(name="Hạng ghế 2", chuyen_bay_id=13)
-        # hg5 = HangGhe(name="Hạng ghế 2", chuyen_bay_id=14)
-        # hg6 = HangGhe(name="Hạng ghế 1", chuyen_bay_id=10)
-        # hg7 = HangGhe(name="Hạng ghế 1", chuyen_bay_id=11)
-        # hg8 = HangGhe(name="Hạng ghế 1", chuyen_bay_id=12)
-        # hg9 = HangGhe(name="Hạng ghế 1", chuyen_bay_id=13)
-        # hg10 = HangGhe(name="Hạng ghế 1", chuyen_bay_id=14)
-        # db.session.add_all([hg1, hg2, hg3, hg4, hg5, hg6, hg7, hg8, hg9, hg10])
-        # db.session.commit()
-        #
-        # dg1 = GiaVe(don_gia=500000, hang_ghe_id=1)
-        # dg2 = GiaVe(don_gia=1000000, hang_ghe_id=2)
-        # dg3 = GiaVe(don_gia=600000, hang_ghe_id=3)
-        # dg4 = GiaVe(don_gia=700000, hang_ghe_id=4)
-        # dg5 = GiaVe(don_gia=800000, hang_ghe_id=5)
-        # dg6 = GiaVe(don_gia=900000, hang_ghe_id=6)
-        # dg7 = GiaVe(don_gia=2000000, hang_ghe_id=7)
-        # dg8 = GiaVe(don_gia=2500000, hang_ghe_id=8)
-        # dg9 = GiaVe(don_gia=3300000, hang_ghe_id=9)
-        # db.session.add_all([dg1, dg2, dg3, dg4, dg5, dg6, dg7, dg8, dg9])
-        # db.session.commit()
-        db.create_all()
+        hg1 = HangGhe(name="Hạng ghế 2", chuyen_bay_id=1, don_gia=1500000)
+        hg2 = HangGhe(name="Hạng ghế 2", chuyen_bay_id=5, don_gia=1500000)
+        hg3 = HangGhe(name="Hạng ghế 2", chuyen_bay_id=2, don_gia=1500000)
+        hg4 = HangGhe(name="Hạng ghế 2", chuyen_bay_id=3, don_gia=1500000)
+        hg5 = HangGhe(name="Hạng ghế 2", chuyen_bay_id=4, don_gia=1500000)
+        hg6 = HangGhe(name="Hạng ghế 2", chuyen_bay_id=6, don_gia=1500000)
+        hg7 = HangGhe(name="Hạng ghế 1", chuyen_bay_id=11, don_gia=3000000)
+        hg8 = HangGhe(name="Hạng ghế 1", chuyen_bay_id=12, don_gia=3000000)
+        hg9 = HangGhe(name="Hạng ghế 1", chuyen_bay_id=13, don_gia=3000000)
+        hg10 = HangGhe(name="Hạng ghế 1", chuyen_bay_id=1, don_gia=3000000)
+        hg11 = HangGhe(name="Hạng ghế 1", chuyen_bay_id=2, don_gia=3000000)
+        hg12 = HangGhe(name="Hạng ghế 1", chuyen_bay_id=3, don_gia=3000000)
+        hg13 = HangGhe(name="Hạng ghế 1", chuyen_bay_id=4, don_gia=3000000)
+        hg14 = HangGhe(name="Hạng ghế 1", chuyen_bay_id=5, don_gia=3000000)
+        hg15 = HangGhe(name="Hạng ghế 1", chuyen_bay_id=6, don_gia=3000000)
+        hg16 = HangGhe(name="Hạng ghế 1", chuyen_bay_id=7, don_gia=3000000)
+        hg17 = HangGhe(name="Hạng ghế 1", chuyen_bay_id=8, don_gia=3000000)
+        hg18 = HangGhe(name="Hạng ghế 1", chuyen_bay_id=9, don_gia=3000000)
+        hg19 = HangGhe(name="Hạng ghế 1", chuyen_bay_id=10, don_gia=3000000)
+        db.session.add_all([hg1, hg2, hg3, hg4, hg5, hg6, hg7, hg8, hg9, hg10, hg11, hg12, hg13, hg14, hg15, hg16, hg17, hg18, hg19])
+        db.session.commit()
+
+        # db.create_all()
